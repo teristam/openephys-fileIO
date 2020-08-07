@@ -110,6 +110,7 @@ def Load(Folder, Processor=None, Experiment=None, Recording=None, Unit='uV', Cha
 
     Files = [f.replace('\\','/') for f in Files]
     InfoFiles = [f.replace('\\','/') for f in InfoFiles]
+    print(Files)
 
     Data, Rate = {}, {}
     for F,File in enumerate(Files):
