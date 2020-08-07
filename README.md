@@ -1,5 +1,7 @@
 # openephys-fileIO
 
+![build](https://github.com/teristam/openephys-fileIO/workflows/build/badge.svg?branch=master)
+
 Allow one to write data into open-ephys continuous and binary format. Useful for offline development and debugging of online algorithms.
 
 
