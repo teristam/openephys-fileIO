@@ -1,2 +1,2 @@
-# openephys-binaryIO
-For working with flat binary format in openephys
+# openephys-fileIO
+For working with various file format in openephys
