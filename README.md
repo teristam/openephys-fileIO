@@ -1,6 +1,6 @@
 # openephys-fileIO
 
-Allow one to write data into open-ephys continuous and binary format. Useful for offline development and debugging of online algorithms
+Allow one to write data into open-ephys continuous and binary format. Useful for offline development and debugging of online algorithms.
 
 
 ### TODO
