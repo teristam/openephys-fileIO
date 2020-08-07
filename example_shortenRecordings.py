@@ -5,7 +5,6 @@ import os
 import shutil
 
 #%% create short files for debugging purpose
-# basePath = '/media/data2/pipeline_testing_data/M1_D31_2018-11-01_12-28-25'
 basePath = '/media/data2/pipeline_testing_data/M5_2018-03-06_15-34-44_of'
 newPath = basePath+'_short'
 shortenLength = 30000*60*10
