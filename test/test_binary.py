@@ -20,7 +20,7 @@ def test_write_binary_data():
         num_data_channel=1,num_aux_channel=1, num_adc_channel=1,dtype=float)
 
     # Load binary file using the offical function
-    data2, rate2 = Load('test\\data')
+    data2, rate2 = Load('test/data')
 
     np.allclose(data.T,data2['100']['0']['0'])
 
