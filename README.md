@@ -32,5 +32,7 @@ fileIO.writeContinuousFile('test/data/test.continuous',file['header'],file['time
 Further example can be seen in the `example_*.py` python scripts.
 
 
+For ease of use, this repo contains some Python module from the original [analysis-tool](https://github.com/open-ephys/analysis-tools) repo 
+
 ### TODO
 - Event data are not yet supported in writing of binary file
