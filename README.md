@@ -29,6 +29,18 @@ fileIO.writeContinuousFile('test/data/test.continuous',file['header'],file['time
    
 ```
 
+Convert a continuous file into flat binary format
+
+```
+dataFolder = 'test/data'
+
+data,headers = load_OpenEphysRecording4BinaryFile(dataFolder,
+    num_data_channel=1,num_aux_channel=1, num_adc_channel=1)
+
+writeBinaryData(dataFolder+'/experiment1/recording1/',data)
+writeStructFile(dataFolder+'/experiment1/recording1/structure.oebin',headers)
+```
+
 Further example can be seen in the `example_*.py` python scripts.
 
 
