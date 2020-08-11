@@ -1,11 +1,11 @@
 #%%
-import OpenEphys
+import fileIO
 import numpy as np
 import os
 import shutil
 
-#%% create short files for debugging purpose
-basePath = '/media/data2/pipeline_testing_data/M5_2018-03-06_15-34-44_of'
+#%% Shorten continuous data
+basePath = 'E:\\open-ephys-testdata\\M1_D20_2018-10-15_12-51-42'
 newPath = basePath+'_short'
 shortenLength = 30000*60*10
 
@@ -17,8 +17,8 @@ except  FileExistsError:
 for f in os.scandir(basePath):
     if f.name.endswith('.continuous'):
         print(f'{f.name} truncated')
-        file = OpenEphys.loadContinuousFast(f.path)
-        OpenEphys.writeContinuousFile(newPath+'/'+f.name, file['header'],
+        file = fileIO.loadContinuousFast(f.path)
+        fileIO.writeContinuousFile(newPath+'/'+f.name, file['header'],
             file['timestamps'], file['data'][:shortenLength], file['recordingNumber'])
     else:
         if f.is_dir():
@@ -28,6 +28,3 @@ for f in os.scandir(basePath):
 
         print(f'{f.name} copied')
 
-
-
-#%%
