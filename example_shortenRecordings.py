@@ -1,5 +1,5 @@
 #%%
-import fileIO
+from openephys_fileIO import fileIO
 import numpy as np
 import os
 import shutil

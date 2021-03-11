@@ -5,7 +5,7 @@ sys.path.append("..") # Adds higher directory to python modules path.
 
 import numpy as np 
 from pathlib import Path
-from openephys_fileIO import  fileIO
+from openephys_fileIO import fileIO
 
 #%% Convert continuous data to flat binary
 outFolder = 'E:\\open-ephys-testdata\\M2_D23-binary'

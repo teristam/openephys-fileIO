@@ -11,13 +11,17 @@ Allow one to write data into open-ephys continuous and binary format. Useful for
 - Basically allow one to convert any neuron data readable in python to open-ephys format
 
 
+### Installation
+
+- clone the repository `git clone https://github.com/teristam/openephys-fileIO.git`
+- go to the `openephys-fileIO` folder, then `pip install .`
 
 ### Usage
 
 Fast load a continuous file:
 
 ```
-import fileIO
+from openephys_fileIO import fileIO
 file = fileIO.loadContinuousFast('test/data/100_CH1.continuous')
 ```
 
