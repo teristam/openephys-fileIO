@@ -1,6 +1,6 @@
 import numpy as np 
-from fileIO import *
-from Binary import *
+from openephys_fileIO.fileIO import *
+from openephys_fileIO.Binary import *
 
 dataFolder = 'test/data'
 

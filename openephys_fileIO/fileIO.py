@@ -4,12 +4,10 @@ Created on 7 August 2020
 @author: Teris Tam
 
 '''
-
-
-from OpenEphys import *
 from pathlib import Path
 import json
-import OpenEphys
+from openephys_fileIO.OpenEphys import *
+import numpy as np 
 
 # constants
 NUM_HEADER_BYTES = 1024
