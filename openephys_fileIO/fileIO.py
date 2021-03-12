@@ -61,7 +61,7 @@ def writeContinuousFile(fname,header,timestamp,x,recording_num=None,dtype=np.flo
     f.close()
 
 
-def writeBinaryData(parentFolder,signals):
+def writeBinaryData(parentFolder,signals, bitVolts = None):
     """Write data in the flat binary format of openephys
     
     Arguments:
@@ -72,8 +72,16 @@ def writeBinaryData(parentFolder,signals):
     if signals.shape[0] < signals.shape[1]:
         signals = signals.T
 
-    if signals.dtype != np.int16:
-        raise TypeError('The input signals should be of type np.int16')
+    
+    if signals.dtype == np.float:
+        # convert the float data to int.16
+        if bitVolts is None:
+            raise ValueError('bitVolts must be provided for float data')
+        signals = (signals / bitVolts).astype(np.int16)
+    elif signals.dtype == np.int16:
+        pass
+    else:
+        raise TypeError('The input signals should be of type np.int16 or np.float')
 
     # make parent folders
     folderpath = Path(parentFolder) / 'continuous' / 'openephys-100.0'
@@ -96,11 +104,11 @@ def load_OpenEphysRecording4BinaryFile(folder,
     Arguments:
         folder {str} -- folder containing the continuous files
         num_tetrodes {int} -- number of tetrode in recording
-        data_file_prefix {str} -- prefix of data file
-        data_file_suffix {str} -- suffix of data file
-
-    Keyword Arguments:
-        dtype {np.dtype} -- dtype of the data in the continuous files (default: {float})
+        source_prefix {str} -- source id of the continuous file e.g. 100
+        dtype {np.dtype} -- dtype of the data in the continuous files 
+        num_data_channel {int} -- number of data channel
+        num_adc_channel {int} -- number of adc channels
+        num_aux_channel {int} -- number of aux channels
     """
     signal = []
     headers = []
@@ -123,38 +131,55 @@ def load_OpenEphysRecording4BinaryFile(folder,
         signal[i,:] = x
     return signal,headers
 
-def writeStructFile(filename,headers):
+
+
+def writeStructFile(filename,headers=None, num_channels=None,samplerate=None,
+        bit_volts=None, channel_names=None):
     """Write the structure file for loading binary files in open-ephys GUI
     
     Arguments:
         filename {str} -- name of the structure file, using structure.oebin
         headers {list} -- list of headers returned from load_OpenEphysRecording4BinaryFile
+        channel_names {list[str]} -- channel_names must start with CH, AUX, or ADC
     """
     structDict = {'GUI version':'0.4.5','continuous':[], 'events':[], 'spikes':[]}
 
+    if headers is not None:
+        samplerate = headers[0]['sampleRate']
+        num_channels = len(headers)
+        bit_volts = [float(h['bitVolts']) for h in headers]
+        channel_names = [h['channel'] for h in headers]
+    else:
+        if samplerate is None or num_channels is None or bit_volts is None or channel_names is None:
+            raise ValueError('If no header is required, samplerate, num_channels, bit_volts and channel name must be provided')
+
+        if isinstance(bit_volts,float):
+            #if a single bit_volts value is provide, make it into a list
+            bit_volts = [bit_volts for _ in range(num_channels)]
+
     structDict['continuous'] = [{
         "folder_name":"openephys-100.0/",
-        "sample_rate":headers[0]['sampleRate'],
+        "sample_rate":samplerate,
         "source_processor_name":"Demo source",
         "source_processor_id":100,
         "source_processor_sub_idx":0,
         "recorded_processor":"Demo source",
         "recorded_processor_id":100,
-        "num_channels":len(headers),
+        "num_channels": num_channels,
         "channels":[]
     }]
 
     #assemble channel data
     channels = []
     # print(headers)
-    for i,h in enumerate(headers):
+    for i,h in enumerate(range(num_channels)):
         channels.append({
             
-            "channel_name": h['channel'],
+            "channel_name": channel_names[i],
             "description":"Demo data channel",
             "identifier":"genericdata.continuous",
             "history":"Demo source",
-            "bit_volts":float(h['bitVolts']),
+            "bit_volts":bit_volts[i],
             "units":"uV",
             "source_processor_index":i,
             "recorded_processor_index":i
