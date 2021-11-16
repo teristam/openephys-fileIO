@@ -8,6 +8,7 @@ from pathlib import Path
 import json
 from openephys_fileIO.OpenEphys import *
 import numpy as np 
+from openephys_fileIO import Binary
 
 # constants
 NUM_HEADER_BYTES = 1024
@@ -246,7 +247,8 @@ def loadContinuousFast(filepath, dtype=float):
     return ch
 
 
-def convertContinuous2Binary(continuousFolder, binaryFolder):
+def convertContinuous2Binary(continuousFolder, binaryFolder, num_data_channel=16, num_adc_channel=8,
+        num_aux_channel=3):
     """Convert continuous files to float binary format
     
     Arguments:
@@ -254,8 +256,13 @@ def convertContinuous2Binary(continuousFolder, binaryFolder):
         binaryFolder {str} -- target folder of flat binary format
     """
 
-    data,headers = load_OpenEphysRecording4BinaryFile(continuousFolder)
+    data,headers = load_OpenEphysRecording4BinaryFile(continuousFolder,num_data_channel=num_data_channel,
+    num_adc_channel=num_adc_channel, num_aux_channel=num_aux_channel)
     writeBinaryData(binaryFolder,data)
     writeStructFile(binaryFolder+'/structure.oebin',headers)
 
 
+def loadBinary(folder):
+    # helper method to load binary data
+    data,rate = Binary.Load(folder)
+    return data, rate
