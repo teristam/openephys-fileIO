@@ -8,7 +8,7 @@ from tqdm import tqdm
 #%% Shorten continuous data
 basePath = 'E:\\open-ephys-testdata\\M2_D23_2019-04-03_13-34-00'
 newPath = basePath+'_short'
-shortenLength = 30000*60*16
+shortenLength = 30000*60*3
 
 try:
     os.mkdir(newPath)
@@ -38,7 +38,7 @@ data_neuro = data[:16,:]
 data_aux = data[16:,:]
 
 #%% cut the data in time, and then stack them into new channels
-repeat = 4
+repeat = 1
 data2 = data_neuro.reshape(data_neuro.shape[0]*repeat, -1)
 data2 = np.vstack([data2,data_aux[:,:data2.shape[1]]])
 print(data2.shape)
@@ -64,7 +64,7 @@ for h in headers:
         print(h['channel'])
 
 #%% write binary file
-outFolder = 'E:\\open-ephys-testdata\\M2_D23_short_ch64'
+outFolder = f'E:\\open-ephys-testdata\\M2_D23_short_ch{16*repeat}'
 
 fileIO.writeBinaryData(outFolder+'/experiment1/recording1/',data2)
 fileIO.writeStructFile(outFolder+'/experiment1/recording1/structure.oebin',headers)
