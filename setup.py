@@ -9,6 +9,7 @@ setup(
         'numpy',
         'scipy',
         'pytest',
-        'pytest-benchmark'
+        'pytest-benchmark',
+        'tqdm'
     ]
 )
